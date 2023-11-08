@@ -37,6 +37,6 @@ func createBook(c *gin.Context){
 func main() {
 	router := gin.Default()
 	router.GET("/books", getBooks)
-	router.POST("/books", createBook)
+	router.POST("/books", createBook) // curl command to post : curl localhost:8080/books --include --header "Content-Type: application/json" -d @body.json --request "POST"
 	router.Run("localhost:8080")
 }
