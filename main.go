@@ -33,6 +33,17 @@ func getBookById(id string) (*book, error){
 	return nil, errors.New("book not found")
 }
 
+func bookById(c *gin.Context){
+	id := c.Param("id")
+	book, err := getBookById(id)
+
+	if err != nil {
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, book)
+}
+
 func createBook(c *gin.Context){
 	var newBook book
 
