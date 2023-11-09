@@ -38,6 +38,7 @@ func bookById(c *gin.Context){
 	book, err := getBookById(id)
 
 	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book not found."})
 		return
 	}
 
@@ -58,7 +59,7 @@ func createBook(c *gin.Context){
 func main() {
 	router := gin.Default()
 	router.GET("/books", getBooks)
-	router.GET("/books/:id")
+	router.GET("/books/:id", bookById)
 	router.POST("/books", createBook) // curl command to post : curl localhost:8080/books --include --header "Content-Type: application/json" -d @body.json --request "POST"
 	router.Run("localhost:8080")
 }
