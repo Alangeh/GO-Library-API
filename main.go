@@ -85,5 +85,6 @@ func main() {
 	router.GET("/books", getBooks)
 	router.GET("/books/:id", bookById)
 	router.POST("/books", createBook) // curl command to post : curl localhost:8080/books --include --header "Content-Type: application/json" -d @body.json --request "POST"
+	router.PATCH("/checkout", checkoutBook)
 	router.Run("localhost:8080")
 }
