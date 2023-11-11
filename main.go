@@ -1,9 +1,9 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"errors"
 )
 
 type book struct {
@@ -21,6 +21,30 @@ var books = []book{
 
 func getBooks(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, books)
+}
+
+func checkoutBook(c *gin.Context){
+	id, ok := c.GetQuery("id")
+
+	if !ok {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message":"Missing id query param"})
+		return
+	}
+
+	book, err := getBookById(id)
+
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book not found."})
+		return
+	}
+
+	if book.Quantity <= 0 {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Book not available."})
+		return
+	}
+
+	book.Quantity = book.Quantity - 1
+	c.IndentedJSON(http.StatusOK, book)
 }
 
 func getBookById(id string) (*book, error){
